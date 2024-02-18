@@ -1,6 +1,9 @@
 package com.app.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.app.entity.MyUser;
@@ -20,8 +23,12 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private WishlistItemRepository wishlistItemRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	public MyUser createUser(MyUser user) throws SomethingWentWrong {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -80,7 +87,11 @@ public class UserServiceImpl implements UserService{
 	    return wishlistItem;
 	}
 
-	
+	public Optional<MyUser> findByEmail(String Email) {
+		Optional<MyUser> user= userRepository.findByEmail(Email);
+		 if(user.isEmpty()) throw new SomethingWentWrong("No user found");
+		 return user;
+	}
 	
 	
 

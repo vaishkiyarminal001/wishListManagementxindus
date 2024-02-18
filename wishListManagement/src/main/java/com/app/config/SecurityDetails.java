@@ -1,9 +1,11 @@
 package com.app.config;
 
-public class SecurityDetails {
+public interface SecurityDetails {
 	
-	public static final String JWT_KEY = "qswedrtghkoiutlmjgbsngautmksnkksminalnvkxcvnsnlksndcvmssd " ;
+	public static final String JWT_KEY = "iamgivingyousecuritykeyjhdsbfjkjhkhksahkjfhskjhkjshkjshdkhskdhfkh" ;
 	
 	public static final String JWT_HEADER = "Authorization" ;
+
+
 
 }

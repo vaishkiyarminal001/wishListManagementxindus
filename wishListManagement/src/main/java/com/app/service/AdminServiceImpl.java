@@ -1,10 +1,13 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.app.entity.Admin;
 import com.app.entity.MyUser;
 import com.app.entity.WishlistItem;
 import com.app.exception.SomethingWentWrong;
@@ -16,6 +19,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AdminServiceImpl implements AdminService{
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private AdminRepository adminRepository;
@@ -62,6 +68,18 @@ public class AdminServiceImpl implements AdminService{
 		existingWishlistItem.setPrice(wishlistItem.getPrice());
 		
 		wishlistItemRepository.save(existingWishlistItem);
+	}
+	
+	public Optional<Admin> findByEmail(String Email) {
+		Optional<Admin> user= adminRepository.findByEmail(Email);
+		 if(user.isEmpty()) throw new SomethingWentWrong("No admin found");
+		 return user;
+	}
+
+	@Override
+	public Admin registerAdmin(Admin admin) throws SomethingWentWrong {
+		admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+		return adminRepository.save(admin);
 	}
 	
 
