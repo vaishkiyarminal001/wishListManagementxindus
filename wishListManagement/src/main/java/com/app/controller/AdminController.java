@@ -29,15 +29,27 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	// login for admin
     
 	@PostMapping("/signin")
 	public ResponseEntity<String> logInUserHandler(Authentication auth) throws SomethingWentWrong {
 		Admin admin = adminService.findByEmail(auth.getName()).get();
 		return new ResponseEntity<>(admin.getEmail() + " Logged In Successfully", HttpStatus.ACCEPTED);
 	}
-
 	
-	@GetMapping("/getUserList")
+	// create id for admin for registration
+	
+	@PostMapping("/adminregister")
+    public ResponseEntity<Admin> registerAdmin(@RequestBody Admin admin) {
+		Admin a = adminService.registerAdmin(admin);
+		return new ResponseEntity<Admin>(a, HttpStatus.CREATED);
+		
+    }
+	
+	
+	// get all the user list
+	
+	@GetMapping("/userlist")
     public ResponseEntity<List<MyUser>> getUsers() {
         try {
             List<MyUser> users = adminService.getUsers();
@@ -46,8 +58,10 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+	
+	// admin can delete the user by there id
 
-    @DeleteMapping("/deleteUserByUserId/{userId}")
+    @DeleteMapping("/deleteuser/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         try {
             adminService.deleteUser(userId);
@@ -57,7 +71,9 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/createWishList")
+    // admin will add the items 
+    
+    @PostMapping("/createwishlist")
     public ResponseEntity<WishlistItem> createWishlistItem(@RequestBody WishlistItem wishlistItem) {
         try {
             WishlistItem createdWishlistItem = adminService.createWishList(wishlistItem);
@@ -67,7 +83,9 @@ public class AdminController {
         }
     }
 
-    @DeleteMapping("/deleteWishListById/{wishlistId}")
+    // admin can delete the items by id
+    
+    @DeleteMapping("/deletewishlist/{wishlistId}")
     public ResponseEntity<Void> deleteWishlistItem(@PathVariable Long wishlistId) {
         try {
             adminService.deleteWishlistItem(wishlistId);
@@ -76,8 +94,10 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    // admin can see all the items
 
-    @GetMapping("/getAllWishList")
+    @GetMapping("/allwishlists")
     public ResponseEntity<List<WishlistItem>> getAllWishlistItems() {
         try {
             List<WishlistItem> wishlistItems = adminService.getAllwishListItem();
@@ -87,7 +107,9 @@ public class AdminController {
         }
     }
 
-    @PutMapping("/updateWishListById/{wishlistId}")
+    // admin can update the items
+    
+    @PutMapping("/updatewishlist/{wishlistId}")
     public ResponseEntity<Void> updateWishlistItem(@PathVariable Long wishlistId, @RequestBody WishlistItem wishlistItem) {
         try {
             adminService.updateWishhlist(wishlistId, wishlistItem);
@@ -96,6 +118,8 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
 	
 
 }

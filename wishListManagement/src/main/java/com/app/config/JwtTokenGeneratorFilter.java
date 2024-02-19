@@ -61,7 +61,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 	    protected boolean shouldNotFilter(HttpServletRequest request) {
 	        String servletPath = request.getServletPath();
 	        return !(
-	            servletPath.equals("/user/signin") ||
+	            servletPath.equals("/api/wishlist/signin") ||
 	            servletPath.equals("/admin/signin")
 	        );
 	    }

@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.app.entity.Admin;
@@ -16,4 +17,5 @@ public interface UserService {
 	 WishlistItem buyWishListItem(Long userId, Long wishListId) throws SomethingWentWrong;
 	 WishlistItem deleteWishListItem(Long userId, Long wishListId) throws SomethingWentWrong;
 	 Optional<MyUser >findByEmail(String email);
+	 List<WishlistItem> getAllwishListItem(Long userId) throws SomethingWentWrong;
 }

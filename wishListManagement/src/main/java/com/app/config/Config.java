@@ -40,9 +40,9 @@ public class Config {
 				}
 			});
 		}) .authorizeHttpRequests(auth -> auth
-				.requestMatchers(HttpMethod.POST, "/user/createUser","/admin/createWishList").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/wishlist/","/admin/adminRegister").permitAll()
 				.requestMatchers("/swagger-ui*/**", "/v3/api-docs/**").permitAll()
-				.requestMatchers("/user/**").hasRole("USER")
+				.requestMatchers("/api/wishlist/**").hasRole("USER")
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated())
 				.csrf(csrf -> csrf.disable())

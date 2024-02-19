@@ -1,5 +1,7 @@
 package com.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,13 @@ import com.app.exception.SomethingWentWrong;
 import com.app.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/wishlist")
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	// user can login 
 	
 	@PostMapping("/signin")
 	public ResponseEntity<String> logInUserHandler(Authentication auth) throws SomethingWentWrong {
@@ -32,8 +36,9 @@ public class UserController {
 		return new ResponseEntity<>(user.getEmail() + " Logged In Successfully", HttpStatus.ACCEPTED);
 	}
 	
+	// user can create the account 
 	
-	@PostMapping("/createUser")
+	@PostMapping("/")
     public ResponseEntity<MyUser> createUser(@RequestBody MyUser user) {
         try {
             MyUser createdUser = userService.createUser(user);
@@ -42,8 +47,11 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+	
 
-    @GetMapping("/getUserById/{userId}")
+	// see the user by id
+	
+    @GetMapping("/{userId}")
     public ResponseEntity<MyUser> getUserById(@PathVariable Long userId) {
         try {
             MyUser user = userService.getUserByUserId(userId);
@@ -52,8 +60,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    // user can update there account
 
-    @PutMapping("/updateUserById/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<MyUser> updateUser(@PathVariable Long userId, @RequestBody MyUser user) {
         try {
             userService.updateUser(userId, user);
@@ -62,8 +72,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    // user can delete there account
 
-    @DeleteMapping("/deleteUserById/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         try {
             userService.deleteUser(userId);
@@ -72,8 +84,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    // user can add items 
 
-    @PostMapping("/ByWishListItem/{userId}/wishlist/{wishListId}")
+    @PostMapping("/{userId}/{wishListId}")
     public ResponseEntity<WishlistItem> buyWishListItem(@PathVariable Long userId, @PathVariable Long wishListId) {
         try {
             WishlistItem wishlistItem = userService.buyWishListItem(userId, wishListId);
@@ -82,8 +96,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    //user can delete there wishlist item
 
-    @DeleteMapping("/deleteWishList/{userId}/wishlist/{wishListId}")
+    @DeleteMapping("/{userId}/{wishListId}")
     public ResponseEntity<WishlistItem> deleteWishListItem(@PathVariable Long userId, @PathVariable Long wishListId) {
         try {
             WishlistItem wishlistItem = userService.deleteWishListItem(userId, wishListId);
@@ -91,6 +107,20 @@ public class UserController {
         } catch (SomethingWentWrong e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    
+    // user and see the wishlist items
+    
+    @GetMapping("/getlist/{userId}")
+    public ResponseEntity <?> getList(@PathVariable Long userId){
+    	try {
+    		List<WishlistItem> wishListSee = userService.getAllwishListItem(userId);
+    		return new ResponseEntity<List<WishlistItem>>(wishListSee, HttpStatus.ACCEPTED);
+    		
+    	}catch(SomethingWentWrong e) {
+    		return new ResponseEntity<String>("Id is wrong for items", HttpStatus.BAD_GATEWAY);
+    		
+    	}
     }
 
 }

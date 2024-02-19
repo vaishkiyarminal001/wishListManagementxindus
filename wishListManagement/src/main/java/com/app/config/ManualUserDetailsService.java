@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import com.app.entity.Admin;
 import com.app.entity.MyUser;
-import com.app.repositury.AdminRepository;
-import com.app.repositury.UserRepository;
+import com.app.repository.AdminRepository;
+import com.app.repository.UserRepository;
 
 
 @Service
