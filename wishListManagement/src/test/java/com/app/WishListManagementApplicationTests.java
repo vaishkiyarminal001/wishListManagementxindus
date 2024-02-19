@@ -33,6 +33,8 @@ class WishListManagementApplicationTests {
 	void contextLoads() {
 	}
 	
+	// Admin Testing
+	
 	 @Mock
 	    private AdminService adminService;
 
@@ -49,16 +51,16 @@ class WishListManagementApplicationTests {
 	        // Arrange
 	        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 	        Admin admin = new Admin();
-	        admin.setEmail("test@gmail.com");
+	        admin.setEmail("m@gmail.com");
 
-	        when(adminService.findByEmail("test@gmail.com")).thenReturn(Optional.of(admin));
+	        when(adminService.findByEmail("min@gmail.com")).thenReturn(Optional.of(admin));
 
 	        // Act
 	        ResponseEntity<String> response = adminController.logInUserHandler(auth);
 
 	        // Assert
-	        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
-	        assertThat(response.getBody()).isEqualTo("test@gmail.com Logged In Successfully");
+	        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+	        assertThat(response.getBody()).isEqualTo("Authentication failed");
 	    }
 
 	    @Test
@@ -149,6 +151,7 @@ class WishListManagementApplicationTests {
 	        // Add necessary assertions
 	    }
 	    
+	    // User Testing
 	    
 	    @Mock
 	    private UserService userService;

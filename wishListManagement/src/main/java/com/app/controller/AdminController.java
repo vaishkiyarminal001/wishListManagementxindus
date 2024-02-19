@@ -33,8 +33,14 @@ public class AdminController {
     
 	@PostMapping("/signin")
 	public ResponseEntity<String> logInUserHandler(Authentication auth) throws SomethingWentWrong {
-		Admin admin = adminService.findByEmail(auth.getName()).get();
-		return new ResponseEntity<>(admin.getEmail() + " Logged In Successfully", HttpStatus.ACCEPTED);
+	    if (auth == null) {
+	        // Handle the case where auth is null
+	        return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
+	    }
+
+	    Admin admin = adminService.findByEmail(auth.getName()).orElseThrow(() -> new SomethingWentWrong("Admin not found"));
+
+	    return new ResponseEntity<>(admin.getEmail() + " Logged In Successfully", HttpStatus.ACCEPTED);
 	}
 	
 	// create id for admin for registration
